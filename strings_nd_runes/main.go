@@ -52,5 +52,12 @@ func main() {
 
 	cstr := string(ch)
 	fmt.Println(cstr)
-	fmt.Printf("Type of cstr is %T\r\n", cstr)
+	fmt.Printf("Type of cstr is %T\n", cstr)
+
+	const NIHONGO = "日本語"
+	fmt.Println(NIHONGO)
+
+	for _, runeVal := range NIHONGO {
+		fmt.Printf("%v -> %c\n", runeVal, runeVal)
+	}
 }
