@@ -5,13 +5,29 @@ import (
 	"time"
 )
 
-//
+// Go routines are just functions tht leave the main thread and run in the background and come back to join the
+// main thread once the function exceution is done to return any value
+
+// Go routines don't stop the program flow and non blocking, like async and await in js
 
 func main() {
+	var err error
 	fmt.Println("Begining program")
-	go sayHello()
+	go sayHello() // non blocking mechanism
 	fmt.Println("After sayHello function")
-	time.Sleep(2 * time.Second) // waits for 2 seconds
+	go func() {
+		err = doWork()
+	}()
+	go printNumbers()
+	go printLetters()
+
+	time.Sleep(2 * time.Second) // waits for 2 seconds -> blocks
+	if err != nil {
+		fmt.Println("Error: ", err)
+	} else {
+		fmt.Println("Work complete successfully")
+	}
+
 }
 
 func sayHello() {
@@ -21,7 +37,20 @@ func sayHello() {
 
 func printNumbers() {
 	for i := 0; i < 5; i++ {
-		fmt.Println("value of i is", i)
-		time.Sleep(1000 * time.Microsecond)
+		fmt.Println("Numner: ", i, time.Now())
+		time.Sleep(100 * time.Millisecond)
 	}
+}
+
+func printLetters() {
+	for _, letter := range "abcde" {
+		fmt.Println(string(letter), time.Now())
+		time.Sleep(200 * time.Millisecond)
+	}
+}
+
+func doWork() error {
+	time.Sleep(1 * time.Second)
+
+	return fmt.Errorf("an error occured in dowork")
 }
