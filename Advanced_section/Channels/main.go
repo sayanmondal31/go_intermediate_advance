@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-func main() {
+func channels() {
 
 	// variable := make(chan type)
-	greeting := make(chan string)
+	greeting := make(chan string) // unbuffered channel
 
 	greetString := "Hello"
 	go func() {
