@@ -5,15 +5,38 @@ import (
 	"time"
 )
 
+// func main() {
+// 	//  ----------------------------- BLOCKING ON SEND ONLY IF THE BUFFER IS EMPTY -----------------------------
+// 	ch := make(chan int, 2)
+// 	go func() {
+// 		time.Sleep(2 * time.Second)
+// 		ch <- 1
+// 		ch <- 2
+// 	}()
+// 	fmt.Println("Value: ", <-ch)
+// 	fmt.Println("Value: ", <-ch)
+// 	fmt.Println("End of program")
+// }
+
 func main() {
-	ch := make(chan int) // initialize channel
-	go func() {          // set go routine - separates from main thread
-		// ch <- 1 // receiving value
+	//  ----------------------------- BLOCKING ON SEND ONLY IF THE BUFFER IS FULL -----------------------------
+	// make(chan Type, capacity)
+	ch := make(chan int, 2)
+
+	ch <- 1
+	ch <- 2
+	fmt.Println("Receiving from buffer")
+	go func() {
+		// fmt.Println("Goroutine 2 seconds time  started")
 		time.Sleep(2 * time.Second)
-		fmt.Println("2 sec goroutine finished")
+		fmt.Println("Received: ", <-ch)
+
 	}()
+	// fmt.Println("Blocking Starts")
+	ch <- 3
+	// fmt.Println("Blocking Ends")
+	// fmt.Println("Received: ", <-ch)
+	// fmt.Println("Received: ", <-ch)
 
-	receiver := <-ch // there is receiver and store data to variable
-
-	fmt.Println(receiver, "receiver") // prints
+	fmt.Println("Buffered channels")
 }
