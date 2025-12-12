@@ -18,7 +18,7 @@ import (
 // 	fmt.Println("End of program")
 // }
 
-func main() {
+func channel_buffer() {
 	//  ----------------------------- BLOCKING ON SEND ONLY IF THE BUFFER IS FULL -----------------------------
 	// make(chan Type, capacity)
 	ch := make(chan int, 2)
@@ -29,7 +29,7 @@ func main() {
 	go func() {
 		// fmt.Println("Goroutine 2 seconds time  started")
 		time.Sleep(2 * time.Second)
-		fmt.Println("Received: ", <-ch)
+		fmt.Println("Received: ", <-ch) // execution : end <- start
 
 	}()
 	// fmt.Println("Blocking Starts")
