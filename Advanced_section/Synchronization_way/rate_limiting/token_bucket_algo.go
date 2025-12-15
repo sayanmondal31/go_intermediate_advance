@@ -36,24 +36,24 @@ func (rl *RateLimiter) startRefill() {
 		case <-ticker.C: //when ticker sends signal to complete
 			select {
 			case rl.tokens <- struct{}{}: //new token will be added after re
-			default:
+			default: // if there is no empty slot
 			}
 		}
 	}
 
 }
 
-func (rl *RateLimiter) allow() bool {
+func (rl *RateLimiter) allow() bool { // it checks token availability
 	select {
 	case <-rl.tokens: // now tokens are removed from channels to perform operations
 		return true
-	default:
+	default: // when tokens available, buffer empty
 		return false
 	}
 }
 
 func main() {
-	rateLimiter := NewRateLimiter(5, time.Second) // allows 5 reqs
+	rateLimiter := NewRateLimiter(5, time.Second) // allows 5 reqs, with refill 1 token / s
 
 	for range 10 {
 		if rateLimiter.allow() {
@@ -61,6 +61,6 @@ func main() {
 		} else {
 			fmt.Println("Request denied")
 		}
-		time.Sleep(5 * time.Millisecond)
+		time.Sleep(200 * time.Millisecond)
 	}
 }
