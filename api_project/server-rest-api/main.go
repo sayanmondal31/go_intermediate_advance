@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	PORT := 3000
 
 	http.HandleFunc("/orders", func(w http.ResponseWriter, r *http.Request) {
 		logRequestDetails(r)
@@ -19,7 +20,6 @@ func main() {
 	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Handling incoming users")
 	})
-	PORT := 3000
 
 	// load the TLS cert and key
 	cert := "cert.pem"
